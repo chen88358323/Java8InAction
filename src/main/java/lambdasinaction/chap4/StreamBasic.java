@@ -30,6 +30,7 @@ public class StreamBasic {
         }
         List<String> lowCaloricDishesName = new ArrayList<>();
         Collections.sort(lowCaloricDishes, new Comparator<Dish>() {
+            @Override
             public int compare(Dish d1, Dish d2){
                 return Integer.compare(d1.getCalories(), d2.getCalories());
             }
@@ -42,7 +43,7 @@ public class StreamBasic {
 
     public static List<String> getLowCaloricDishesNamesInJava8(List<Dish> dishes){
         return dishes.stream()
-                .filter(d -> d.getCalories() < 400)
+                .filter(d -> d.getCalories() >300)
                 .sorted(comparing(Dish::getCalories))
                 .map(Dish::getName)
                 .collect(toList());
