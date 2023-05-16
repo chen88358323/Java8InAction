@@ -45,10 +45,23 @@ public class ListNode {
        }else {
            System.out.println("printListNode: ");
            while (node!=null){
-               System.out.println(node.val);
+               System.out.print(node.val+"  ");
                node=node.next;
            }
        }
+        System.out.println("***************************************");
+    }
+    public static void printListNode(String str,ListNode node) {
+        if(node==null){
+            System.out.println(str+": is null");
+        }else {
+            System.out.println(str+":");
+            while (node!=null){
+                System.out.print(node.val+"  ");
+                node=node.next;
+            }
+        }
+        System.out.println("***************************************");
     }
 
 

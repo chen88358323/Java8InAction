@@ -1,10 +1,9 @@
-package org.cc.leetcode.onehundred;
+package org.cc.leetcode.onehundred.twenty;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * https://leetcode.cn/problems/container-with-most-water/
@@ -19,9 +18,10 @@ public class Num15 {
     public static void main(String[] args) {
         Num15 test=new Num15();
 //        ListNode.printListNode();
-        int[] tar={-1,0,1,2,-1,-4};
+//        int[] tar={-1,0,1,2,-1,-4};
 //        int[] tar={3,-2,1,0};
 
+        int[] tar={ 3,0,-2,-1,1,2};
 
         List<List<Integer>> res=test.threeSum(tar);
         Gson gson = new GsonBuilder().serializeNulls().create();
@@ -29,72 +29,50 @@ public class Num15 {
         System.out.println("res   "+text);
     }
 
-    private  void removeListNode(int i,List<Integer> tarlist){
-        if(tarlist==null||tarlist.size()==0){
-            return;
-        }else {
-            if(tarlist.indexOf(i)==0){
-                tarlist.remove(0);
-            }
-        }
-    }
+
     public List<List<Integer>> threeSum(int[] nums) {
-        Set<List<Integer>> resset=new HashSet<List<Integer>>();
+        if(nums==null||nums.length<3){
+            return null;
+        }
+        List<Integer> sumlist=null;
+        Set<List<Integer>> set=new HashSet<List<Integer>>();
+        Arrays.sort(nums);
+        int sta,end=0;//指针位置
+        int sum,temp=0;//三数字相加结果
+        int len= nums.length;
+        for (int i = 0; i < len; i++) {
+            temp=nums[i];
+            if(temp>0){break;}//起始数字>0，直接退出
+            sta=i+1;
+            end=len-1;
+            while (sta<end){
+                sum=temp+nums[sta]+nums[end];
+                System.out.println(nums[i]+" "+nums[sta]+" "+nums[end]);
+                if(sum==0){
+                    sumlist=new ArrayList<>();
+                    sumlist.add(temp);
+                    sumlist.add(nums[sta]);
+                    sumlist.add(nums[end]);
+                    set.add(sumlist);
 
-        //search res list
-        List<Integer> tarlist=Arrays.stream(nums).boxed().collect(Collectors.toList());
-
-//        List<Integer> numslist=Arrays.stream(nums).boxed().collect(Collectors.toList());
-
-        Arrays.stream(nums).boxed().collect(Collectors.toList());
-//        int len=nums.length-1;
-//        int[] temparra= Arrays.stream(nums).toArray();
-        if(nums==null||nums.length<2){
-            return  null;
-        }else {
-            for (int i = 0; i <nums.length-1 ; i++) {
-                int fir=nums[i];
-                int sen=nums[i+1];
-                int thi=0-fir-sen;
-                removeListNode(fir,tarlist);
-                removeListNode(sen,tarlist);
-                String res=findNum(tarlist,thi);
-                if(res!=null&&!"".equals(res)){//建议使用StringUtils.isBlank()
-                    System.out.println("thi:"+res);
-                    thi=Integer.valueOf(res);
-//                    dellistNode(numslist,thi);
-                    ArrayList<Integer>  list=new ArrayList<>();
-//                    if((fir!=sen&&sen!=thi&&thi!=fir)||(fir==sen&&sen==thi&&thi==fir&&fir==0)){
-                        list.add(fir);
-                        list.add(sen);list.add(thi);
-                        Collections.sort(list);
-                        resset.add(list);
-//                    }
-
+                    while(sta<end&&nums[sta]==nums[sta+1]){
+                        sta++;
+                    }
+                    while(sta<end&&nums[end]==nums[end-1]){
+                        end--;
+                    }
+                    sta++;
+                    end--;
+                }else if(sum>0){//end指针左移
+                    end--;
+                }else {
+                    sta++;
                 }
             }
-        }
-        List<List<Integer>>  reslist=new  ArrayList<List<Integer>>(resset);
-        return reslist;
-    }
-    //双指针查找数字
-    private String findNum(List<Integer> list,int num){
-        String res=null;
-        //判断在外面做
-        if(list==null||list.size()==0){
 
-        }else if(list.size()==1){
-            if(list.get(0)==num){
-                return num+"";
-            }
-        }else {
-            if(list.lastIndexOf(num)>-1){
-                res=num+"";
-                return  res;
-
-            }
         }
-        return res;
+        List<List<Integer>>  list=new ArrayList<>(set);
+        return list;
     }
 }
 
